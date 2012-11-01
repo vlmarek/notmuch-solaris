@@ -57,6 +57,9 @@ char* strcasestr(const char *haystack, const char *needle);
 #if !STD_GETPWUID
 #define _POSIX_PTHREAD_SEMANTICS 1
 #endif
+#if !STD_ASCTIME
+#define _POSIX_PTHREAD_SEMANTICS 1
+#endif
 
 #ifdef __cplusplus
 }
