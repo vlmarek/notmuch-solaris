@@ -54,6 +54,10 @@ char* strcasestr(const char *haystack, const char *needle);
 #define IGNORE_RESULT(x) x
 #endif /* __GNUC__ */
 
+#if !STD_GETPWUID
+#define _POSIX_PTHREAD_SEMANTICS 1
+#endif
+
 #ifdef __cplusplus
 }
 #endif
