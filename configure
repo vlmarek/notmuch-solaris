@@ -587,6 +587,10 @@ if ${CC} -Wl,--enable-new-dtags -Wl,-rpath,/tmp/ -o minimal minimal.c >/dev/null
 then
     printf "Yes.\n"
     rpath_ldflags="-Wl,--enable-new-dtags -Wl,-rpath,\$(libdir)"
+elif ${CC} -Wl,-rpath,/tmp/ -o minimal minimal.c >/dev/null 2>&1
+then
+    printf "Yes.\n"
+    rpath_ldflags="-Wl,-rpath,\$(libdir)"
 else
     printf "No (nothing to worry about).\n"
     rpath_ldflags=""
