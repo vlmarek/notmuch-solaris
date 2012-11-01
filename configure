@@ -539,6 +539,17 @@ else
 fi
 rm -f compat/check_asctime
 
+printf "Checking whether libnsl is needed for gethostbyname... "
+if ${CC} -o compat/check_ghbn "$srcdir"/compat/check_ghbn.c > /dev/null 2>&1
+then
+    printf "No.\n"
+    libnsl_ldflags=""
+else
+    printf "Yes.\n"
+    libnsl_ldflags="-lnsl"
+fi
+rm -f compat/check_ghbn
+
 printf "int main(void){return 0;}\n" > minimal.c
 
 printf "Checking for rpath support... "
@@ -728,6 +739,9 @@ GMIME_LDFLAGS = ${gmime_ldflags}
 TALLOC_CFLAGS = ${talloc_cflags}
 TALLOC_LDFLAGS = ${talloc_ldflags}
 
+# Flags needed to get gethostbyname() at link time
+LIBNSL_LDFLAGS = ${libnsl_ldflags}
+
 # Flags needed to have linker set rpath attribute
 RPATH_LDFLAGS = ${rpath_ldflags}
 
@@ -762,5 +776,6 @@ CONFIGURE_CXXFLAGS = -DHAVE_GETLINE=\$(HAVE_GETLINE) \$(GMIME_CFLAGS)    \\
 		     -DHAVE_STRCASESTR=\$(HAVE_STRCASESTR)               \\
 		     -DSTD_GETPWUID=\$(STD_GETPWUID)                     \\
 		     -DSTD_ASCTIME=\$(STD_ASCTIME)
-CONFIGURE_LDFLAGS =  \$(GMIME_LDFLAGS) \$(TALLOC_LDFLAGS) \$(XAPIAN_LDFLAGS)
+CONFIGURE_LDFLAGS =  \$(GMIME_LDFLAGS) \$(TALLOC_LDFLAGS) \$(XAPIAN_LDFLAGS) \\
+		     \$(LIBNSL_LDFLAGS)
 EOF
