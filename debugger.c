@@ -36,7 +36,7 @@ debugger_is_active (void)
     if (RUNNING_ON_VALGRIND)
 	return TRUE;
 
-    sprintf (buf, "/proc/%d/exe", getppid ());
+    sprintf (buf, "/proc/%d/exe", (int) getppid ());
     if (readlink (buf, buf, sizeof (buf)) != -1 &&
 	strncmp (basename (buf), "gdb", 3) == 0)
     {
