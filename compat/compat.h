@@ -30,6 +30,13 @@
 extern "C" {
 #endif
 
+#if !STD_GETPWUID
+#define _POSIX_PTHREAD_SEMANTICS 1
+#endif
+#if !STD_ASCTIME
+#define _POSIX_PTHREAD_SEMANTICS 1
+#endif
+
 #if !HAVE_GETLINE
 #include <stdio.h>
 #include <unistd.h>
@@ -50,6 +57,11 @@ char* strcasestr(const char *haystack, const char *needle);
 char *strsep(char **stringp, const char *delim);
 #endif /* !HAVE_STRSEP */
 
+#if !HAVE_TIMEGM
+#include <time.h>
+time_t timegm (struct tm *tm);
+#endif /* !HAVE_TIMEGM */
+
 /* Silence gcc warnings about unused results.  These warnings exist
  * for a reason; any use of this needs to be justified. */
 #ifdef __GNUC__
@@ -57,13 +69,6 @@ char *strsep(char **stringp, const char *delim);
 #else /* !__GNUC__ */
 #define IGNORE_RESULT(x) x
 #endif /* __GNUC__ */
-
-#if !STD_GETPWUID
-#define _POSIX_PTHREAD_SEMANTICS 1
-#endif
-#if !STD_ASCTIME
-#define _POSIX_PTHREAD_SEMANTICS 1
-#endif
 
 #ifdef __cplusplus
 }

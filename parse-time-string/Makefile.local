@@ -1,7 +1,9 @@
 dir := parse-time-string
 extra_cflags += -I$(srcdir)/$(dir)
 
-libparse-time-string_c_srcs := $(dir)/parse-time-string.c
+libparse-time-string_c_srcs :=		\
+	$(notmuch_compat_srcs)		\
+	$(dir)/parse-time-string.c
 
 libparse-time-string_modules := $(libparse-time-string_c_srcs:.c=.o)
 
