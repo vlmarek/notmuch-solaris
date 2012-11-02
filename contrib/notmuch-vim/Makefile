@@ -5,8 +5,6 @@ files = plugin/notmuch.vim \
 prefix = $(HOME)/.vim
 destdir = $(prefix)/plugin
 
-INSTALL = install -D -m644
-
 all: help
 
 help:
@@ -17,7 +15,7 @@ help:
 	@echo "    make symlink     - create symlinks in ~/.vim (useful for development)"
 
 install:
-	@for x in $(files); do $(INSTALL) $(CURDIR)/$$x $(prefix)/$$x; done
+	@for x in $(files); do $(INSTALL) -D -m644 $(CURDIR)/$$x $(prefix)/$$x; done
 
-link symlink: INSTALL = ln -fs
 link symlink: install
+	@for x in $(files); do ln -fs $(CURDIR)/$$x $(prefix)/$$x; done

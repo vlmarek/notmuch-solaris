@@ -288,7 +288,7 @@ notmuch-shared: $(notmuch_client_modules) lib/$(LINKER_NAME)
 .PHONY: install
 install: all install-man
 	mkdir -p "$(DESTDIR)$(prefix)/bin/"
-	install notmuch-shared "$(DESTDIR)$(prefix)/bin/notmuch"
+	$(INSTALL) notmuch-shared "$(DESTDIR)$(prefix)/bin/notmuch"
 ifeq ($(MAKECMDGOALS), install)
 	@echo ""
 	@echo "Notmuch is now installed to $(DESTDIR)$(prefix)"
