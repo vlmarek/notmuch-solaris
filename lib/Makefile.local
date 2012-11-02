@@ -89,11 +89,11 @@ install: install-$(dir)
 
 install-$(dir): $(dir)/$(LIBNAME)
 	mkdir -p "$(DESTDIR)$(libdir)/"
-	install -m0644 "$(lib)/$(LIBNAME)" "$(DESTDIR)$(libdir)/"
+	$(INSTALL) -m0644 "$(lib)/$(LIBNAME)" "$(DESTDIR)$(libdir)/"
 	ln -sf $(LIBNAME) "$(DESTDIR)$(libdir)/$(SONAME)"
 	ln -sf $(LIBNAME) "$(DESTDIR)$(libdir)/$(LINKER_NAME)"
 	mkdir -p "$(DESTDIR)$(includedir)"
-	install -m0644 "$(srcdir)/$(lib)/notmuch.h" "$(DESTDIR)$(includedir)/"
+	$(INSTALL) -m0644 "$(srcdir)/$(lib)/notmuch.h" "$(DESTDIR)$(includedir)/"
 	$(LIBRARY_INSTALL_POST_COMMAND)
 
 SRCS  := $(SRCS) $(libnotmuch_c_srcs) $(libnotmuch_cxx_srcs)
