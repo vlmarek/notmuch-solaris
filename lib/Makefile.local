@@ -30,7 +30,11 @@ LIBRARY_SUFFIX = so
 LINKER_NAME = libnotmuch.$(LIBRARY_SUFFIX)
 SONAME = $(LINKER_NAME).$(LIBNOTMUCH_VERSION_MAJOR)
 LIBNAME = $(SONAME).$(LIBNOTMUCH_VERSION_MINOR).$(LIBNOTMUCH_VERSION_RELEASE)
+ifeq ($(PLATFORM),SOLARIS)
+LIBRARY_LINK_FLAG = -shared -Wl,-M notmuch.sym -Wl,-soname=$(SONAME) -Wl,--no-undefined -lc
+else
 LIBRARY_LINK_FLAG = -shared -Wl,--version-script=notmuch.sym,-soname=$(SONAME) -Wl,--no-undefined
+endif
 ifeq ($(PLATFORM),OPENBSD)
 LIBRARY_LINK_FLAG += -lc
 endif
