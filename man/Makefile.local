@@ -39,9 +39,9 @@ install-man: $(COMPRESSED_MAN)
 	mkdir -p "$(DESTDIR)$(mandir)/man1"
 	mkdir -p "$(DESTDIR)$(mandir)/man5"
 	mkdir -p "$(DESTDIR)$(mandir)/man7"
-	install -m0644 $(MAN1_GZ) $(DESTDIR)/$(mandir)/man1
-	install -m0644 $(MAN5_GZ) $(DESTDIR)/$(mandir)/man5
-	install -m0644 $(MAN7_GZ) $(DESTDIR)/$(mandir)/man7
+	$(INSTALL) -m0644 $(MAN1_GZ) $(DESTDIR)/$(mandir)/man1
+	$(INSTALL) -m0644 $(MAN5_GZ) $(DESTDIR)/$(mandir)/man5
+	$(INSTALL) -m0644 $(MAN7_GZ) $(DESTDIR)/$(mandir)/man7
 	cd $(DESTDIR)/$(mandir)/man1 && ln -sf notmuch.1.gz notmuch-setup.1.gz
 
 update-man-versions: $(MAN_SOURCE)

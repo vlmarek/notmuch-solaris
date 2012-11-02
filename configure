@@ -626,6 +626,21 @@ for flag in -Wmissing-declarations; do
 done
 printf "\n\t${WARN_CFLAGS}\n"
 
+INSTALL="install"
+printf "Checking for working \"install\" program... "
+mkdir _tmp_
+cd _tmp_
+echo 1 > 1
+mkdir dest
+if install 1 dest > /dev/null 2>&1 ; then
+      printf "\"install\" works fine.\n"
+else
+      INSTALL="ginstall"
+      printf "using \"ginstall\".\n"
+fi
+cd ..
+rm -rf _tmp_
+
 rm -f minimal minimal.c
 
 cat <<EOF
@@ -821,4 +836,8 @@ CONFIGURE_CXXFLAGS = -DHAVE_GETLINE=\$(HAVE_GETLINE) \$(GMIME_CFLAGS)    \\
 		     -DSTD_ASCTIME=\$(STD_ASCTIME)
 CONFIGURE_LDFLAGS =  \$(GMIME_LDFLAGS) \$(TALLOC_LDFLAGS) \$(XAPIAN_LDFLAGS) \\
 		     \$(LIBNSL_LDFLAGS)
+
+# Which "install" program to use
+INSTALL = ${INSTALL}
+
 EOF
