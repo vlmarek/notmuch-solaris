@@ -45,6 +45,7 @@ typedef struct {
 #define STRINGIFY(s) _SUB_STRINGIFY(s)
 #define _SUB_STRINGIFY(s) #s
 
+NOTMUCH_BEGIN_DECLS
 /* Here's the current schema for our database (for NOTMUCH_DATABASE_VERSION):
  *
  * We currently have two different types of documents (mail and
@@ -1955,6 +1956,7 @@ notmuch_database_find_message_by_filename (notmuch_database_t *notmuch,
     return status;
 }
 
+NOTMUCH_END_DECLS
 notmuch_string_list_t *
 _notmuch_database_get_terms_with_prefix (void *ctx, Xapian::TermIterator &i,
 					 Xapian::TermIterator &end,
@@ -1977,6 +1979,7 @@ _notmuch_database_get_terms_with_prefix (void *ctx, Xapian::TermIterator &i,
 
     return list;
 }
+NOTMUCH_BEGIN_DECLS
 
 notmuch_tags_t *
 notmuch_database_get_all_tags (notmuch_database_t *db)
@@ -1998,3 +2001,4 @@ notmuch_database_get_all_tags (notmuch_database_t *db)
 	return NULL;
     }
 }
+NOTMUCH_END_DECLS
