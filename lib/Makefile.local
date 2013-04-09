@@ -84,18 +84,18 @@ notmuch.sym: $(srcdir)/$(dir)/notmuch.h $(libnotmuch_modules)
 	sh $(srcdir)/$(lib)/gen-version-script.sh $< $(libnotmuch_modules) > $@
 
 $(dir)/$(SONAME): $(dir)/$(LIBNAME)
-	ln -sf $(LIBNAME) $@
+	rm -f $@; ln -sf $(LIBNAME) $@
 
 $(dir)/$(LINKER_NAME): $(dir)/$(SONAME)
-	ln -sf $(LIBNAME) $@
+	rm -f $@; ln -sf $(LIBNAME) $@
 
 install: install-$(dir)
 
 install-$(dir): $(dir)/$(LIBNAME)
 	mkdir -p "$(DESTDIR)$(libdir)/"
 	$(INSTALL) -m0644 "$(lib)/$(LIBNAME)" "$(DESTDIR)$(libdir)/"
-	ln -sf $(LIBNAME) "$(DESTDIR)$(libdir)/$(SONAME)"
-	ln -sf $(LIBNAME) "$(DESTDIR)$(libdir)/$(LINKER_NAME)"
+	rm -f "$(DESTDIR)$(libdir)/$(SONAME)"; ln -sf $(LIBNAME) "$(DESTDIR)$(libdir)/$(SONAME)"
+	rm -f "$(DESTDIR)$(libdir)/$(LINKER_NAME)"; ln -sf $(LIBNAME) "$(DESTDIR)$(libdir)/$(LINKER_NAME)"
 	mkdir -p "$(DESTDIR)$(includedir)"
 	$(INSTALL) -m0644 "$(srcdir)/$(lib)/notmuch.h" "$(DESTDIR)$(includedir)/"
 	$(LIBRARY_INSTALL_POST_COMMAND)
