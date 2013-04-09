@@ -45,6 +45,7 @@ CXX=${CXX:-g++}
 CFLAGS=${CFLAGS:--O2}
 CPPFLAGS=${CPPFLAGS:-}
 CXXFLAGS=${CXXFLAGS:-\$(CFLAGS)}
+DEPFLAGS=${DEPFLAGS:-}
 LDFLAGS=${LDFLAGS:-}
 XAPIAN_CONFIG=${XAPIAN_CONFIG:-xapian-config}
 
@@ -96,6 +97,7 @@ First, some common variables can specified via environment variables:
 	CXX		The C++ compiler to use
 	CXXFLAGS	Flags to pass to the C compiler
 	LDFLAGS		Flags to pass when linking
+	DEPFLAGS	Flags used for generating makefile dependencies
 
 Each of these values can further be controlled by specifying them
 later on the "make" command line.
@@ -626,6 +628,22 @@ for flag in -Wmissing-declarations; do
 done
 printf "\n\t${WARN_CFLAGS}\n"
 
+if [ -z "$DEPFLAGS" ]; then
+    printf "Checking for dependency building flags..."
+    for flag in '-MD -MP -MF' '-xMD -xMF'; do
+	if ${CC} -o minimal minimal.c $flag deps > /dev/null 2>&1
+	then
+	    rm -f deps
+	    DEPFLAGS="$flag "'.deps/$*.d'
+	    break # no need to continue, there is just one correct way
+	fi
+	rm -f deps
+    done
+    printf "\n\t${DEPFLAGS}\n"
+else
+    printf "Dependency building flags set from environment to\n\t${DEPFLAGS}\n"
+fi
+
 INSTALL="install"
 printf "Checking for working \"install\" program... "
 mkdir _tmp_
@@ -702,6 +720,9 @@ CPPFLAGS = ${CPPFLAGS}
 
 # Default FLAGS for C++ compiler (can be overridden by user such as "make CXXFLAGS=-g")
 CXXFLAGS = ${CXXFLAGS}
+
+# Used for both C and C++ compiler to generate makefile dependencies
+DEPFLAGS = ${DEPFLAGS}
 
 # Default FLAGS for the linker (can be overridden by user such as "make LDFLAGS=-znow")
 LDFLAGS = ${LDFLAGS}
