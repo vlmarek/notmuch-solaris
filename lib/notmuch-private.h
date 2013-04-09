@@ -139,16 +139,43 @@ typedef enum _notmuch_private_status {
  *
  * Note that the function _internal_error does not return. Evaluating
  * to NOTMUCH_STATUS_SUCCESS is done purely to appease the compiler.
+ *
+ * This uses modified Richard Hansen's standards compliant variadic
+ * macro trick
+ * http://stackoverflow.com/questions/5588855/standard-alternative-to-gccs-va-args-trick
  */
-#define COERCE_STATUS(private_status, format, ...)			\
-    ((private_status >= (notmuch_private_status_t) NOTMUCH_STATUS_LAST_STATUS)\
+#define COERCE_STATUS(...)			\
+    ((FIRST(__VA_ARGS__) >= (notmuch_private_status_t) NOTMUCH_STATUS_LAST_STATUS) \
      ?									\
-     _internal_error (format " (%s).\n",				\
-                      ##__VA_ARGS__,					\
+     _internal_error (SECOND(__VA_ARGS__) " (%s).\n"			\
+                      REST(REST(__VA_ARGS__)),				\
                       __location__),					\
      (notmuch_status_t) NOTMUCH_PRIVATE_STATUS_SUCCESS			\
      :									\
-     (notmuch_status_t) private_status)
+     (notmuch_status_t) FIRST(__VA_ARGS__))
+
+/* expands to the first argument */
+#define FIRST(...) FIRST_HELPER(__VA_ARGS__, throwaway)
+#define FIRST_HELPER(first, ...) first
+/* expands to second argument */
+#define SECOND(...) SECOND_HELPER(__VA_ARGS__, throwaway, throwaway)
+#define SECOND_HELPER(first, second, ...) second
+
+/*
+ * if there's only one argument, expands to nothing.  if there is more
+ * than one argument, expands to a comma followed by everything but
+ * the first argument.  only supports up to 9 arguments but can be
+ * trivially expanded.
+ */
+#define REST(...) REST_HELPER(NUM(__VA_ARGS__), __VA_ARGS__)
+#define REST_HELPER(qty, ...) REST_HELPER2(qty, __VA_ARGS__)
+#define REST_HELPER2(qty, ...) REST_HELPER_##qty(__VA_ARGS__)
+#define REST_HELPER_ONE(first)
+#define REST_HELPER_TWOORMORE(first, ...) , __VA_ARGS__
+#define NUM(...) \
+        SELECT_10TH(__VA_ARGS__, TWOORMORE, TWOORMORE, TWOORMORE, TWOORMORE,\
+		                TWOORMORE, TWOORMORE, TWOORMORE, TWOORMORE, ONE, throwaway)
+#define SELECT_10TH(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, ...) a10
 
 /* Flags shared by various lookup functions. */
 typedef enum _notmuch_find_flags {
