@@ -28,7 +28,7 @@ if [ `uname -s` = SunOS ] ; then
 	nawk -F'\|' '$7 !~ "UNDEF" && $8 ~ "Xapian.*Error" { print $8 }'
     }
     find_compat_syms() {
-	nawk -F'\|' '$7 !~ "UNDEF" && $8 ~ "get(line|delim)" { print $8 ";" }'
+	nawk -F'\|' '$7 !~ "UNDEF" && $8 ~ "get(line|delim)"  && $4 !~ "FILE" { print $8 ";" }'
     }
     demangle() {
 	gc++filt "$@"
