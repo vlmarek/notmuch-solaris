@@ -72,7 +72,7 @@ libnotmuch_cxx_srcs =		\
 	$(dir)/query.cc		\
 	$(dir)/thread.cc
 
-libnotmuch_modules := $(libnotmuch_c_srcs:.c=.o) $(libnotmuch_cxx_srcs:.cc=.o)
+libnotmuch_modules := $(libnotmuch_c_srcs:.c=.o) $(libnotmuch_cxx_srcs:.cc=.o) lib/thread.o util/error_util.o parse-time-string/parse-time-string.o
 
 $(dir)/libnotmuch.a: $(libnotmuch_modules)
 	$(call quiet,AR) rcs $@ $^
