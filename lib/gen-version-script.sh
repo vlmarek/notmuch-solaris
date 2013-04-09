@@ -12,7 +12,7 @@ fi
 HEADER=$1
 shift
 
-if [ `uname -s` == SunOS ] ; then
+if [ `uname -s` = SunOS ] ; then
     #
     # Using Solaris "nm", a defined symbol looks like this:
     #
@@ -49,7 +49,7 @@ printf '{\nglobal:\n'
 
 # Find the typeinfo for "Xapian::*Error"s.
 nm $* | find_xapian_error | sort | uniq | while read sym; do
-    demangled=$(demangle $sym)
+    demangled=`demangle $sym`
     case $demangled in
 	typeinfo*) 
 	    printf "\t$sym;\n"
