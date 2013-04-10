@@ -31,7 +31,7 @@ LINKER_NAME = libnotmuch.$(LIBRARY_SUFFIX)
 SONAME = $(LINKER_NAME).$(LIBNOTMUCH_VERSION_MAJOR)
 LIBNAME = $(SONAME).$(LIBNOTMUCH_VERSION_MINOR).$(LIBNOTMUCH_VERSION_RELEASE)
 ifeq ($(PLATFORM),SOLARIS)
-LIBRARY_LINK_FLAG = -shared -Wl,-M notmuch.sym -Wl,-soname=$(SONAME) -z defs -lc
+LIBRARY_LINK_FLAG = -shared -Wl,-M notmuch.sym -h $(SONAME) -z defs -lc
 else
 LIBRARY_LINK_FLAG = -shared -Wl,--version-script=notmuch.sym,-soname=$(SONAME) -Wl,--no-undefined
 endif
@@ -84,18 +84,18 @@ notmuch.sym: $(srcdir)/$(dir)/notmuch.h $(libnotmuch_modules)
 	sh $(srcdir)/$(lib)/gen-version-script.sh $< $(libnotmuch_modules) > $@
 
 $(dir)/$(SONAME): $(dir)/$(LIBNAME)
-	rm -f $@; ln -sf $(LIBNAME) $@
+	ln -sf $(LIBNAME) $@
 
 $(dir)/$(LINKER_NAME): $(dir)/$(SONAME)
-	rm -f $@; ln -sf $(LIBNAME) $@
+	ln -sf $(LIBNAME) $@
 
 install: install-$(dir)
 
 install-$(dir): $(dir)/$(LIBNAME)
 	mkdir -p "$(DESTDIR)$(libdir)/"
 	$(INSTALL) -m0644 "$(lib)/$(LIBNAME)" "$(DESTDIR)$(libdir)/"
-	rm -f "$(DESTDIR)$(libdir)/$(SONAME)"; ln -sf $(LIBNAME) "$(DESTDIR)$(libdir)/$(SONAME)"
-	rm -f "$(DESTDIR)$(libdir)/$(LINKER_NAME)"; ln -sf $(LIBNAME) "$(DESTDIR)$(libdir)/$(LINKER_NAME)"
+	ln -sf $(LIBNAME) "$(DESTDIR)$(libdir)/$(SONAME)"
+	ln -sf $(LIBNAME) "$(DESTDIR)$(libdir)/$(LINKER_NAME)"
 	mkdir -p "$(DESTDIR)$(includedir)"
 	$(INSTALL) -m0644 "$(srcdir)/$(lib)/notmuch.h" "$(DESTDIR)$(includedir)/"
 	$(LIBRARY_INSTALL_POST_COMMAND)
