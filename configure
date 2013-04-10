@@ -636,20 +636,27 @@ else
     printf "Dependency building flags set from environment to\n\t${DEPFLAGS}\n"
 fi
 
-INSTALL="install"
 printf "Checking for working \"install\" program... "
+INSTALL=
 mkdir _tmp_
 cd _tmp_
 echo 1 > 1
 mkdir dest
-if install 1 dest > /dev/null 2>&1 ; then
-      printf "\"install\" works fine.\n"
-else
-      INSTALL="ginstall"
-      printf "using \"ginstall\".\n"
-fi
+for I in install ginstall /usr/ucb/install; do
+    if ! "$I" 1 dest > /dev/null 2>&1 ; then
+	continue
+    fi
+    INSTALL="$I"
+    printf "\"$INSTALL\".\n"
+    break
+done
 cd ..
 rm -rf _tmp_
+if [ -z "$INSTALL" ]; then
+    echo "Sorry, no 'install' program found"
+    eixt 1
+fi
+
 
 rm -f minimal minimal.c
 
