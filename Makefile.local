@@ -252,6 +252,7 @@ distclean: clean
 	rm -rf $(DISTCLEAN)
 
 notmuch_client_srcs =		\
+	$(notmuch_compat_srcs)	\
 	command-line-arguments.c\
 	debugger.c		\
 	gmime-filter-reply.c	\
