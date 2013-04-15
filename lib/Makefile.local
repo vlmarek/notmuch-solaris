@@ -74,8 +74,8 @@ libnotmuch_cxx_srcs =		\
 
 libnotmuch_modules := $(libnotmuch_c_srcs:.c=.o) $(libnotmuch_cxx_srcs:.cc=.o) lib/thread.o util/error_util.o parse-time-string/parse-time-string.o
 
-$(dir)/libnotmuch.a: $(libnotmuch_modules)
-	$(call quiet,AR) rcs $@ $^
+$(dir)/libnotmuch.a: $(libnotmuch_modules) util/libutil.a
+	$(call quiet,AR) rcs $@ $(libnotmuch_modules) util/*.o
 
 $(dir)/$(LIBNAME): $(libnotmuch_modules) notmuch.sym util/libutil.a parse-time-string/libparse-time-string.a
 	$(call quiet,CXX $(CXXFLAGS)) $(libnotmuch_modules) $(FINAL_LIBNOTMUCH_LDFLAGS) $(LIBRARY_LINK_FLAG) -o $@ util/libutil.a parse-time-string/libparse-time-string.a
