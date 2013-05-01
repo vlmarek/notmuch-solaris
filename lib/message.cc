@@ -266,18 +266,19 @@ _notmuch_message_get_term (notmuch_message_t *message,
 			   const char *prefix)
 {
     int prefix_len = strlen (prefix);
-    const char *term = NULL;
+    std::string term;
     char *value;
 
     i.skip_to (prefix);
 
-    if (i != end)
-	term = (*i).c_str ();
-
-    if (!term || strncmp (term, prefix, prefix_len))
+    if (i == end)
 	return NULL;
 
-    value = talloc_strdup (message, term + prefix_len);
+    term = *i;
+    if (strncmp (term.c_str(), prefix, prefix_len))
+	return NULL;
+
+    value = talloc_strdup (message, term.c_str() + prefix_len);
 
 #if DEBUG_DATABASE_SANITY
     i++;
