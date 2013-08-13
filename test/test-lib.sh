@@ -558,9 +558,9 @@ test_expect_equal_json () {
     # The test suite forces LC_ALL=C, but this causes Python 3 to
     # decode stdin as ASCII.  We need to read JSON in UTF-8, so
     # override Python's stdio encoding defaults.
-    output=$(echo "$1" | PYTHONIOENCODING=utf-8 python -mjson.tool \
+    output=$(printf '%s' "$1" | PYTHONIOENCODING=utf-8 python -mjson.tool 2>&1 \
         || echo "$1")
-    expected=$(echo "$2" | PYTHONIOENCODING=utf-8 python -mjson.tool \
+    expected=$(printf '%s' "$2" | PYTHONIOENCODING=utf-8 python -mjson.tool 2>&1 \
         || echo "$2")
     shift 2
     test_expect_equal "$output" "$expected" "$@"
@@ -967,6 +967,7 @@ test_done () {
 
 	if [ "$test_failure" = "0" ]; then
 	    if [ "$test_broken" = "0" ]; then
+		cd ..
 		rm -rf "$remove_tmp"
 	    fi
 	    exit 0

@@ -42,7 +42,7 @@ expected='[[[{"id": "foo@one.com",
  "Date": "Fri, 05 Jan 2001 15:43:57 +0000"},
  "body": [{"id": 1, "content-type": "text/plain",
  "content": "This is just a test message (#2)\n"}]}, []]]]]]'
-expected=`echo "$expected" | notmuch_json_show_sanitize`
+expected=`printf '%s' "$expected" | notmuch_json_show_sanitize`
 test_expect_equal_json "$output" "$expected"
 
 test_begin_subtest "Prefer References to In-Reply-To"
@@ -72,7 +72,7 @@ expected='[[[{"id": "foo@two.com",
  "body": [{"id": 1,
  "content-type": "text/plain", "content": "This is just a test message (#4)\n"}]},
  []]]]]]'
-expected=`echo "$expected" | notmuch_json_show_sanitize`
+expected=`printf '%s' "$expected" | notmuch_json_show_sanitize`
 test_expect_equal_json "$output" "$expected"
 
 test_begin_subtest "Use In-Reply-To when no References"
@@ -98,7 +98,7 @@ expected='[[[{"id": "foo@three.com", "match": true, "excluded": false,
  "Date": "Fri, 05 Jan 2001 15:43:57 +0000"}, "body": [{"id": 1,
  "content-type": "text/plain", "content": "This is just a test message (#6)\n"}]},
  []]]]]]'
-expected=`echo "$expected" | notmuch_json_show_sanitize`
+expected=`printf '%s' "$expected" | notmuch_json_show_sanitize`
 test_expect_equal_json "$output" "$expected"
 
 test_begin_subtest "Use last Reference"
@@ -134,7 +134,7 @@ expected='[[[{"id": "foo@four.com", "match": true, "excluded": false,
  "To": "Notmuch Test Suite <test_suite@notmuchmail.org>",
  "Date": "Fri, 05 Jan 2001 15:43:57 +0000"}, "body": [{"id": 1,
  "content-type": "text/plain", "content": "This is just a test message (#8)\n"}]}, []]]]'
-expected=`echo "$expected" | notmuch_json_show_sanitize`
+expected=`printf '%s' "$expected" | notmuch_json_show_sanitize`
 test_expect_equal_json "$output" "$expected"
 
 
