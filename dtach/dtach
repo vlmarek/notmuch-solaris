@@ -1,0 +1,1 @@
+exec dtach.$(uname -p) "$@"
