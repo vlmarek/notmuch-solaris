@@ -16,6 +16,11 @@ fi
 
 cd $(dirname "$0")
 
+if [ `uname -s` == SunOS ]; then
+  PATH="/usr/gnu/bin:$(pwd)/../dtach:$PATH"
+  export PATH
+fi
+
 TESTS="
   basic
   help-test
