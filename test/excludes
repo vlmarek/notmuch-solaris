@@ -32,6 +32,7 @@ test_begin_subtest "Search, exclude \"deleted\" messages from search"
 notmuch config set search.exclude_tags deleted
 generate_message '[subject]="Not deleted"'
 not_deleted_id=$gen_msg_id
+notmuch new > /dev/null # notmuch new sometimes imported the messages in different order which confused the tests
 generate_message '[subject]="Deleted"'
 notmuch new > /dev/null
 notmuch tag +deleted id:$gen_msg_id
